@@ -58,17 +58,21 @@ function setupCalculator() {
 
       if (func && numA) {
         let numStart = DISPLAY.textContent.indexOf(func) + 1;
-        numB = Number(DISPLAY.textContent.slice(numStart));
-        let result = operate(func, numA, numB);
+        let numString = DISPLAY.textContent.slice(numStart);
 
-        if (clickedOperator !== "=") {
-          numA = Number(result);
-          func = clickedOperator;
-          result += clickedOperator;
+        if (numString) {
+          numB = Number(numString);
+          let result = operate(func, numA, numB);
+
+          if (clickedOperator !== "=") {
+            numA = Number(result);
+            func = clickedOperator;
+            result += clickedOperator;
+          }
+
+          DISPLAY.textContent = result;
+          return result;
         }
-
-        DISPLAY.textContent = result;
-        return result;
       }
     });
   });
