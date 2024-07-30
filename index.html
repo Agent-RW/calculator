@@ -11,7 +11,7 @@
     <div id="header">Simple Calculator</div>
     <div id="content">
       <div id="calculator">
-        <div id="display" style="border: thin solid; height: 18px;"></div>
+        <div id="display" style="border: thin solid; height: 18px"></div>
         <div id="buttons">
           <div id="digits">
             <button class="digit">1</button>
@@ -23,14 +23,16 @@
             <button class="digit">7</button>
             <button class="digit">8</button>
             <button class="digit">9</button>
+            <button id="clear-btn">C</button>
             <button class="digit">0</button>
+            <button id="decimal-btn">.</button>
           </div>
           <div id="operators">
-            <button class="operator">+</button>
-            <button class="operator">-</button>
-            <button class="operator">x</button>
-            <button class="operator">/</button>
-            <button id="eval-btn" class="operator">=</button>
+            <button class="operator function">+</button>
+            <button class="operator function">-</button>
+            <button class="operator function">x</button>
+            <button class="operator function">/</button>
+            <button class="operator" id="eval-btn">=</button>
           </div>
         </div>
       </div>

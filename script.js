@@ -1,10 +1,10 @@
 const DIGIT_BTNS = document.querySelectorAll(".digit");
-const OPERATOR_BTNS = document.querySelectorAll(".operator");
+const FUNCTION_BTNS = document.querySelectorAll(".function");
 const EVAL_BTN = document.getElementById("eval-btn");
 const DISPLAY = document.getElementById("display");
 let numA;
 let numB;
-let operator;
+let func;
 
 function add(a, b) {
   return a + b;
@@ -22,20 +22,24 @@ function divide(a, b) {
   return a / b;
 }
 
-function operate(operator, numA, numB) {
-  if (!numA || !numB) {
+function operate(operation, firstNum, secondNum) {
+  if (!firstNum || !secondNum) {
     return "error: invalid number entered";
   }
 
-  switch (operator) {
+  numA = null;
+  numB = null;
+  func = null;
+
+  switch (operation) {
     case "+":
-      return add(numA, numB);
+      return add(firstNum, secondNum);
     case "-":
-      return subtract(numA, numB);
-    case "*":
-      return multiply(numA, numB);
+      return subtract(firstNum, secondNum);
+    case "x":
+      return multiply(firstNum, secondNum);
     case "/":
-      return divide(numA, numB);
+      return divide(firstNum, secondNum);
     default:
       return "error: invalid operator entered";
   }
@@ -44,21 +48,42 @@ function operate(operator, numA, numB) {
 function setupCalculator() {
   DIGIT_BTNS.forEach((digitBtn) => {
     digitBtn.addEventListener("click", (event) => {
-      console.log(digitBtn.textContent);
       DISPLAY.textContent += digitBtn.textContent;
     });
   });
-  
-  OPERATOR_BTNS.forEach((operatorBtn) => {
-    operatorBtn.addEventListener("click", event => {
-      console.log(operatorBtn.textContent);
-      DISPLAY.textContent += operatorBtn.textContent;
+
+  document.querySelectorAll(".operator").forEach((operatorBtn) => {
+    operatorBtn.addEventListener("click", (event) => {
+      let clickedOperator = event.target.textContent;
+
+      if (func && numA) {
+        let numStart = DISPLAY.textContent.indexOf(func) + 1;
+        numB = Number(DISPLAY.textContent.slice(numStart));
+        let result = operate(func, numA, numB);
+
+        if (clickedOperator !== "=") {
+          numA = Number(result);
+          func = clickedOperator;
+          result += clickedOperator;
+        }
+
+        DISPLAY.textContent = result;
+        return result;
+      }
     });
   });
 
-  EVAL_BTN.addEventListener("click", event => {
-    console.log(DISPLAY.textContent);
-  })
+  FUNCTION_BTNS.forEach((functionBtn) => {
+    functionBtn.addEventListener("click", (event) => {
+      let clickedFunc = event.target.textContent;
+
+      if (DISPLAY.textContent && !func) {
+        numA = Number(DISPLAY.textContent);
+        func = clickedFunc;
+        DISPLAY.textContent += clickedFunc;
+      }
+    });
+  });
 }
 
 setupCalculator();
