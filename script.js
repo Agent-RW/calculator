@@ -1,8 +1,3 @@
-const DIGIT_BTNS = document.querySelectorAll(".digit");
-const DECIMAL_BTN = document.getElementById("decimal-btn");
-const FUNCTION_BTNS = document.querySelectorAll(".function");
-const EVAL_BTN = document.getElementById("eval-btn");
-const CLEAR_BTN = document.getElementById("clear-btn");
 const DISPLAY = document.getElementById("display");
 const ROUNDING_FACTOR = 10 ** 6;
 let numA;
@@ -62,13 +57,15 @@ function operate(operation, firstNum, secondNum) {
   return result;
 }
 
-function setupCalculator() {
-  DIGIT_BTNS.forEach((digitBtn) => {
+function setupDigitBtns() {
+  document.querySelectorAll(".digit").forEach((digitBtn) => {
     digitBtn.addEventListener("click", (event) => {
       DISPLAY.textContent += digitBtn.textContent;
     });
   });
+}
 
+function setupOperatorBtns() {
   document.querySelectorAll(".operator").forEach((operatorBtn) => {
     operatorBtn.addEventListener("click", (event) => {
       let clickedOperator = event.target.textContent;
@@ -81,6 +78,7 @@ function setupCalculator() {
           numB = Number(numString);
           let result = operate(func, numA, numB);
 
+          //If an expression is evaluated using +, -, x, or / store the 
           if (clickedOperator !== "=" && result) {
             numA = Number(result);
             func = clickedOperator;
@@ -93,7 +91,7 @@ function setupCalculator() {
     });
   });
 
-  FUNCTION_BTNS.forEach((functionBtn) => {
+  document.querySelectorAll(".function").forEach((functionBtn) => {
     functionBtn.addEventListener("click", (event) => {
       let clickedFunc = event.target.textContent;
 
@@ -104,26 +102,36 @@ function setupCalculator() {
       }
     });
   });
+}
 
-  CLEAR_BTN.addEventListener("click", (event) => {
+function setupDecimalBtn() {
+  document.getElementById("decimal-btn").addEventListener("click", (event) => {
+    if (!func && !DISPLAY.textContent.includes(".")) {
+      DISPLAY.textContent += ".";
+    }
+
+    let operandIndex = DISPLAY.textContent.indexOf(func);
+    if (func && !DISPLAY.textContent.includes(".", operandIndex)) {
+      DISPLAY.textContent += ".";
+    }
+  });
+}
+
+function setupClearBtn() {
+  document.getElementById("clear-btn").addEventListener("click", (event) => {
     numA = null;
     numB = null;
     func = null;
 
     DISPLAY.textContent = "";
   });
-
-  DECIMAL_BTN.addEventListener("click", (event) => {
-    console.log("Decimal button responsive");
-    if (!func && !DISPLAY.textContent.includes(".")) {
-      DISPLAY.textContent += ".";
-    } else if (
-      func &&
-      !DISPLAY.textContent.includes(".", DISPLAY.textContent.indexOf(func))
-    ) {
-      DISPLAY.textContent += ".";
-    }
-  });
 }
 
-setupCalculator();
+function setupCalculatorBtns() {
+  setupDigitBtns();
+  setupOperatorBtns();
+  setupDecimalBtn();
+  setupClearBtn();
+}
+
+setupCalculatorBtns();
