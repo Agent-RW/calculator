@@ -1,9 +1,10 @@
 const DIGIT_BTNS = document.querySelectorAll(".digit");
+const DECIMAL_BTN = document.getElementById("decimal-btn");
 const FUNCTION_BTNS = document.querySelectorAll(".function");
 const EVAL_BTN = document.getElementById("eval-btn");
 const CLEAR_BTN = document.getElementById("clear-btn");
 const DISPLAY = document.getElementById("display");
-const ROUNDING_FACTOR = 10**6;
+const ROUNDING_FACTOR = 10 ** 6;
 let numA;
 let numB;
 let func;
@@ -110,6 +111,18 @@ function setupCalculator() {
     func = null;
 
     DISPLAY.textContent = "";
+  });
+
+  DECIMAL_BTN.addEventListener("click", (event) => {
+    console.log("Decimal button responsive");
+    if (!func && !DISPLAY.textContent.includes(".")) {
+      DISPLAY.textContent += ".";
+    } else if (
+      func &&
+      !DISPLAY.textContent.includes(".", DISPLAY.textContent.indexOf(func))
+    ) {
+      DISPLAY.textContent += ".";
+    }
   });
 }
 
