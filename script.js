@@ -19,11 +19,17 @@ function multiply(a, b) {
 }
 
 function divide(a, b) {
+  if (b === 0) {
+    window.alert(
+      "What are you doing BOZO? You know you can't divide by 0 right?"
+    );
+    return "";
+  }
   return a / b;
 }
 
 function operate(operation, firstNum, secondNum) {
-  if (!firstNum || !secondNum) {
+  if (firstNum === null || secondNum === null) {
     return "error: invalid number entered";
   }
 
@@ -56,7 +62,7 @@ function setupCalculator() {
     operatorBtn.addEventListener("click", (event) => {
       let clickedOperator = event.target.textContent;
 
-      if (func && numA) {
+      if (func && numA !== null) {
         let numStart = DISPLAY.textContent.indexOf(func) + 1;
         let numString = DISPLAY.textContent.slice(numStart);
 
@@ -64,14 +70,13 @@ function setupCalculator() {
           numB = Number(numString);
           let result = operate(func, numA, numB);
 
-          if (clickedOperator !== "=") {
+          if (clickedOperator !== "=" && result) {
             numA = Number(result);
             func = clickedOperator;
             result += clickedOperator;
           }
 
           DISPLAY.textContent = result;
-          return result;
         }
       }
     });
