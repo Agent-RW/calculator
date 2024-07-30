@@ -1,7 +1,9 @@
 const DIGIT_BTNS = document.querySelectorAll(".digit");
 const FUNCTION_BTNS = document.querySelectorAll(".function");
 const EVAL_BTN = document.getElementById("eval-btn");
+const CLEAR_BTN = document.getElementById("clear-btn");
 const DISPLAY = document.getElementById("display");
+const ROUNDING_FACTOR = 10**6;
 let numA;
 let numB;
 let func;
@@ -32,6 +34,7 @@ function operate(operation, firstNum, secondNum) {
   if (firstNum === null || secondNum === null) {
     return "error: invalid number entered";
   }
+  let result;
 
   numA = null;
   numB = null;
@@ -39,16 +42,23 @@ function operate(operation, firstNum, secondNum) {
 
   switch (operation) {
     case "+":
-      return add(firstNum, secondNum);
+      result = add(firstNum, secondNum);
+      break;
     case "-":
-      return subtract(firstNum, secondNum);
+      result = subtract(firstNum, secondNum);
+      break;
     case "x":
-      return multiply(firstNum, secondNum);
+      result = multiply(firstNum, secondNum);
+      break;
     case "/":
-      return divide(firstNum, secondNum);
+      result = divide(firstNum, secondNum);
+      break;
     default:
-      return "error: invalid operator entered";
+      result = "error: invalid operator entered";
   }
+
+  result = Math.round(result * ROUNDING_FACTOR) / ROUNDING_FACTOR;
+  return result;
 }
 
 function setupCalculator() {
@@ -92,6 +102,14 @@ function setupCalculator() {
         DISPLAY.textContent += clickedFunc;
       }
     });
+  });
+
+  CLEAR_BTN.addEventListener("click", (event) => {
+    numA = null;
+    numB = null;
+    func = null;
+
+    DISPLAY.textContent = "";
   });
 }
 
